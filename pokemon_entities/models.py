@@ -15,6 +15,11 @@ class PokemonEntity(models.Model):
     """ уже создал ForeignKey1 """
     appeared_at = models.DateTimeField(verbose_name='Время появления', blank=True, null=True)
     disappeared_at = models.DateTimeField(verbose_name='Время исчезновения', blank=True, null=True)
+    level = models.IntegerField(blank=True, null=True)
+    health = models.IntegerField(blank=True, null=True)
+    attack = models.IntegerField(blank=True, null=True)
+    protection = models.IntegerField(blank=True, null=True)
+    endurance = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.pokemon.title} ({self.latitude}, {self.longitude})'

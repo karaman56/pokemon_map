@@ -16,4 +16,15 @@ class PokemonAdmin(admin.ModelAdmin):
 
 @admin.register(PokemonEntity)
 class PokemonEntityAdmin(admin.ModelAdmin):
-    list_display = ('pokemon', 'latitude', 'longitude', 'appeared_at', 'disappeared_at')
+    list_display = (
+        'pokemon',
+        'latitude',
+        'longitude',
+        'appeared_at',
+        'disappeared_at',
+        'level',
+        'health',
+        'attack',
+        'protection',
+        'endurance'
+    )
