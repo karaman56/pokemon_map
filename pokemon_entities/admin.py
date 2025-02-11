@@ -1,6 +1,6 @@
 from django.utils.safestring import mark_safe
 from django.contrib import admin
-from .models import Pokemon
+from .models import Pokemon, PokemonEntity
 
 @admin.register(Pokemon)
 class PokemonAdmin(admin.ModelAdmin):
@@ -13,3 +13,7 @@ class PokemonAdmin(admin.ModelAdmin):
         return "Изображение отсутствует"
 
     image_display.short_description = 'Фото'  # Заголовок для колонки
+
+@admin.register(PokemonEntity)
+class PokemonEntityAdmin(admin.ModelAdmin):
+    list_display = ('pokemon', 'latitude', 'longitude')
