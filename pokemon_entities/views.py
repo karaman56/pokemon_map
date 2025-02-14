@@ -40,3 +40,4 @@ def show_pokemon(request, pokemon_id):
         'map': folium_map._repr_html_(),
         'pokemon': pokemon,
     })
+#код работает без изменний
