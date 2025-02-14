@@ -1,11 +1,18 @@
 from django.db import models
 
+# pokemon_entities/models.py
+from django.db import models
+
 class Pokemon(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='pokemons/', blank=True, null=True)
+    title_ru = models.CharField("Название (рус.)", max_length=200)
+    title_en = models.CharField("Название (англ.)", max_length=200, blank=True)
+    title_jp = models.CharField("Название (яп.)", max_length=200, blank=True)
+    description = models.TextField("Описание", blank=True)
+    image = models.ImageField("Изображение", upload_to='pokemons', blank=True, null=True)
+
 
     def __str__(self):
-        return f'{self.title}'
+        return self.title_ru
 
 
 class PokemonEntity(models.Model):
@@ -22,4 +29,4 @@ class PokemonEntity(models.Model):
     endurance = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.pokemon.title} ({self.latitude}, {self.longitude})'
+        return f'{self.pokemon.title_ru} ({self.latitude}, {self.longitude})'

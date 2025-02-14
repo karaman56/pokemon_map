@@ -4,7 +4,7 @@ from .models import Pokemon, PokemonEntity
 
 @admin.register(Pokemon)
 class PokemonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image_display')  # Отображаем название и изображение
+    list_display = ('title_ru', 'image_display')  # Отображаем название и изображение
     readonly_fields = ('image_display',)  # Делаем поле только для чтения
 
     def image_display(self, obj):
@@ -26,5 +26,5 @@ class PokemonEntityAdmin(admin.ModelAdmin):
         'health',
         'attack',
         'protection',
-        'endurance'
+        'endurance'  # Теперь это поле есть в модели
     )
