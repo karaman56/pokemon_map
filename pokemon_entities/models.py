@@ -26,6 +26,7 @@ class Pokemon(models.Model):
     @property
     def next_evolution(self):
         return self.next_evolutions.first()
+    """Сделал в одном шаге """
 
 
 
