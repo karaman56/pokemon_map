@@ -1,120 +1,149 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{{ pokemon.title_ru }} - Pokemon Go map</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="shortcut icon" href="https://assets.pokemon.com/static2/_ui/img/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ pokemon.title_ru }} - Pokemon Go map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="https://assets.pokemon.com/static2/_ui/img/favicon.ico">
 </head>
 <body>
-  <div class="container">
-    <ul class="nav" style="background-color: #e3f2fd;">
-      <li class="nav-item">
-        <a class="nav-link active" href="{% url 'mainpage' %}">На главную</a>
-      </li>
-    </ul>
+    <div class="container">
+        <!-- Навигация -->
+        <nav class="nav bg-primary mb-4">
+            <a class="nav-link text-white" href="{% url 'mainpage' %}">На главную</a>
+        </nav>
 
-    <!-- Основная информация о покемоне -->
-    <div class="row mt-4">
-      <div class="col-md-4">
-        {% if pokemon.image %}
-          <img src="{{ pokemon.image.url }}"
-               alt="{{ pokemon.title_ru }}"
-               class="img-fluid"
-               style="height:200px; width:200px">
-        {% else %}
-          <div style="height:200px; width:200px; background: lightgray;"></div>
-        {% endif %}
-      </div>
-
-      <div class="col-md-8">
-        <h1>{{ pokemon.title_ru }}</h1>
-        <p>
-          <b>{{ pokemon.title_ru }}</b>
-          (анг. {{ pokemon.title_en|default:"не указано" }},
-          яп. {{ pokemon.title_jp|default:"не указано" }}) —
-          {{ pokemon.description|default:"описание отсутствует" }}
-        </p>
-      </div>
-    </div>
-
-    <!-- Эволюции -->
-    {% if pokemon.next_evolution or pokemon.previous_evolution %}
-      <hr>
-      <div class="mt-4">
-        <h4>Эволюции покемона</h4>
-        <div class="row">
-          {% if pokemon.previous_evolution %}
-            <div class="col-5 p-2 m-2">
-              <div class="img-thumbnail">
-                <a href="{% url 'pokemon' pokemon_id=pokemon.previous_evolution.id %}">
-                  <div class="d-flex justify-content-center">
-                    {% if pokemon.previous_evolution.image %}
-                      <img src="{{ pokemon.previous_evolution.image.url }}"
-                           style="height:50px; width:50px">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    {% if pokemon.image %}
+                        <img src="{{ pokemon.image.url }}"
+                             alt="{{ pokemon.title_ru }}"
+                             class="card-img-top"
+                             style="max-height: 200px; object-fit: contain">
                     {% else %}
-                      <div style="height:50px; width:50px; background: lightgray;"></div>
+                        <div class="card-body bg-light d-flex align-items-center justify-content-center"
+                             style="height: 200px">
+                            <span class="text-muted">Изображение отсутствует</span>
+                        </div>
                     {% endif %}
-                    <p class="align-middle m-0" style="line-height:50px;">
-                      {{ pokemon.previous_evolution.title_ru }}
-                    </p>
-                  </div>
-                </a>
-              </div>
-              <h6 class="text-center m-2">Из кого эволюционировал</h6>
+                </div>
             </div>
-          {% endif %}
 
-          {% if pokemon.next_evolution %}
-            <div class="col-5 p-2 m-2">
-              <div class="img-thumbnail">
-                <a href="{% url 'pokemon' pokemon_id=pokemon.next_evolution.id %}">
-                  <div class="d-flex justify-content-center">
-                    {% if pokemon.next_evolution.image %}
-                      <img src="{{ pokemon.next_evolution.image.url }}"
-                           style="height:50px; width:50px">
-                    {% else %}
-                      <div style="height:50px; width:50px; background: lightgray;"></div>
-                    {% endif %}
-                    <p class="align-middle m-0" style="line-height:50px;">
-                      {{ pokemon.next_evolution.title_ru }}
-                    </p>
-                  </div>
-                </a>
-              </div>
-              <h6 class="text-center m-2">В кого эволюционирует</h6>
+            <div class="col-md-8">
+                <h1 class="display-4">{{ pokemon.title_ru }}</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="lead">
+                            <b>{{ pokemon.title_ru }}</b>
+                            (анг. <span class="text-muted">{{ pokemon.title_en|default:"—" }}</span>,
+                            яп. <span class="text-muted">{{ pokemon.title_jp|default:"—" }}</span>)<br>
+                            {{ pokemon.description|default:"Описание покемона пока не добавлено" }}
+                        </p>
+                    </div>
+                </div>
             </div>
-          {% endif %}
         </div>
-      </div>
-    {% endif %}
 
-    <!-- Стихии -->
-    {% if pokemon.element_type.all %}
-      <hr>
-      <div class="mt-4">
-        <h4>Стихии покемона</h4>
-        {% for element in pokemon.element_type.all %}
-          <div class="mb-2">
-            {% if element.img %}
-              <img src="{{ element.img.url }}"
-                   style="height:20px; width:20px;">
-            {% endif %}
-            <span class="ml-2">
-              {{ element.title }},
-              силён против: {{ element.strong_against.all|join:", " }}
-            </span>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+        <!-- Эволюции -->
+        {% if pokemon.previous_evolution or pokemon.next_evolution %}
+        <section class="mb-4">
+            <hr>
+            <h3 class="mb-3">Эволюции</h3>
+            <div class="row">
+                <!-- Предыдущая эволюция -->
+                {% if pokemon.previous_evolution %}
+                <div class="col-md-5 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Предыдущая форма</h5>
+                            <a href="{% url 'pokemon' pokemon_id=pokemon.previous_evolution.id %}"
+                               class="text-decoration-none">
+                                <div class="d-flex align-items-center">
+                                    {% if pokemon.previous_evolution.image %}
+                                    <img src="{{ pokemon.previous_evolution.image.url }}"
+                                         class="mr-3"
+                                         style="width: 50px; height: 50px; object-fit: contain">
+                                    {% else %}
+                                    <div class="mr-3 bg-light"
+                                         style="width: 50px; height: 50px"></div>
+                                    {% endif %}
+                                    <span class="h5 mb-0">{{ pokemon.previous_evolution.title_ru }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
-    <!-- Карта -->
-    <h1 class="mt-5 mb-2">Карта {{ pokemon.title_ru }} в Москве</h1>
-    <div class="mb-5">
-      {{ map|safe }}
+                <!-- Следующая эволюция -->
+                {% if pokemon.next_evolution %}
+                <div class="col-md-5 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Следующая форма</h5>
+                            <a href="{% url 'pokemon' pokemon_id=pokemon.next_evolution.id %}"
+                               class="text-decoration-none">
+                                <div class="d-flex align-items-center">
+                                    {% if pokemon.next_evolution.image %}
+                                    <img src="{{ pokemon.next_evolution.image.url }}"
+                                         class="mr-3"
+                                         style="width: 50px; height: 50px; object-fit: contain">
+                                    {% else %}
+                                    <div class="mr-3 bg-light"
+                                         style="width: 50px; height: 50px"></div>
+                                    {% endif %}
+                                    <span class="h5 mb-0">{{ pokemon.next_evolution.title_ru }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Стихии -->
+        {% if pokemon.element_type.exists %}
+        <section class="mb-4">
+            <hr>
+            <h3 class="mb-3">Стихии</h3>
+            <div class="row">
+                {% for element in pokemon.element_type.all %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                {% if element.img %}
+                                <img src="{{ element.img.url }}"
+                                     class="mr-3"
+                                     style="width: 30px; height: 30px">
+                                {% endif %}
+                                <div>
+                                    <h5 class="mb-1">{{ element.title }}</h5>
+                                    <p class="text-muted mb-0">
+                                        Силён против:
+                                        {{ element.strong_against.all|join:", "|default:"—" }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Карта -->
+        <section class="mb-5">
+            <h3 class="mb-3">Карта {{ pokemon.title_ru }} в Москве</h3>
+            <div class="border rounded overflow-hidden">
+                {{ map|safe }}
+            </div>
+        </section>
     </div>
-  </div>
 </body>
 </html>

@@ -11,9 +11,22 @@ class Pokemon(models.Model):
     image = models.ImageField("Изображение", upload_to='pokemons', blank=True, null=True)
     """Ранее добавил возможность описани яна трех языках"""
 
+    previous_evolution = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='next_evolutions',
+        verbose_name='Предыдущая эволюция'
+    )
 
     def __str__(self):
         return self.title_ru
+
+    @property
+    def next_evolution(self):
+        return self.next_evolutions.first()
+
 
 
 class PokemonEntity(models.Model):

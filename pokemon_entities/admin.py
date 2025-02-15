@@ -4,8 +4,8 @@ from .models import Pokemon, PokemonEntity
 
 @admin.register(Pokemon)
 class PokemonAdmin(admin.ModelAdmin):
-    list_display = ('title_ru', 'image_display')  # Отображаем название и изображение
-    readonly_fields = ('image_display',)  # Делаем поле только для чтения
+    list_display = ('title_ru', 'previous_evolution', 'image_display')
+    list_filter = ('previous_evolution',)  # Фильтр по эволюциям
 
     def image_display(self, obj):
         if obj.image:
