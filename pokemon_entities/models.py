@@ -9,6 +9,7 @@ class Pokemon(models.Model):
     title_jp = models.CharField("Название (яп.)", max_length=200, blank=True)
     description = models.TextField("Описание", blank=True)
     image = models.ImageField("Изображение", upload_to='pokemons', blank=True, null=True)
+    """Ранее добавил возможность описани яна трех языках"""
 
 
     def __str__(self):
