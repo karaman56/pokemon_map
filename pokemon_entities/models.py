@@ -3,37 +3,36 @@ from django.db import models
 
 class Pokemon(models.Model):
     title_ru = models.CharField(
-        "Название (рус.)",
+        verbose_name="Название (рус.)",
         max_length=200
     )
     title_en = models.CharField(
-        "Название (англ.)",
+        verbose_name="Название (англ.)",
         max_length=200,
         blank=True
     )
     title_jp = models.CharField(
-        "Название (яп.)",
+        verbose_name="Название (яп.)",
         max_length=200,
         blank=True
     )
     description = models.TextField(
-        "Описание",
+        verbose_name="Описание",
         blank=True
     )
     image = models.ImageField(
-        "Изображение",
+        verbose_name="Изображение",
         upload_to='pokemons',
         blank=True,
         null=True
     )
-
     previous_evolution = models.ForeignKey(
         'self',
+        verbose_name="Предыдущая эволюция",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='next_evolutions',
-        verbose_name='Предыдущая эволюция'
+        related_name='next_evolutions'
     )
 
     def __str__(self):
